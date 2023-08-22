@@ -1,6 +1,20 @@
 // Supports ES6
 // import { create, Whatsapp } from '@wppconnect-team/wppconnect';
-const fs = require('fs');
+// const fs = require('fs');
+var http = require('http');
+var fs = require('fs');
+
+var http = require('http'),
+  fs = require('fs'),
+  index = fs.readFileSync(__dirname + '/index.html');
+
+var app = http.createServer(function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.end(index);
+});
+
+app.listen(8080);
+
 const wppconnect = require('@wppconnect-team/wppconnect');
 
 wppconnect
@@ -30,12 +44,14 @@ wppconnect
       );
     },
     logQR: false,
+    autoClose: false
   })
-  .then((client) => start(client))
+  .then((client) => { start(client) })
   .catch((error) => console.log(error));
 
 
 function start(client) {
+
   client.onMessage((message) => {
     if (message.body === 'Hello') {
       client
